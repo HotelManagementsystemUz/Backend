@@ -1,0 +1,62 @@
+﻿
+
+using Application.DTOs.HotelDtos.Admin;
+using Application.DTOs.HotelDtos.Guest;
+using Application.DTOs.HotelDtos.Order;
+using Application.DTOs.HotelDtos.OrderStatus;
+using Application.DTOs.HotelDtos.Position;
+using Application.DTOs.HotelDtos.Room;
+using Application.DTOs.HotelDtos.RoomStatus;
+using Application.DTOs.HotelDtos.RoomType;
+using Application.DTOs.HotelDtos.Staff;
+using AutoMapper;
+using Domain.Entities.HotelEntiries;
+
+namespace Application.DTOs.Mappers;
+
+public class AutoMepperProfile:Profile
+{
+    public AutoMepperProfile()
+    {
+        CreateMap<Admin, AdminDto>().ReverseMap();
+        CreateMap<AddAdminDto, Admin>();
+        CreateMap<UpdateAdminDto, Admin>();
+
+
+        CreateMap<Guest, GuestDto>().ReverseMap();
+        CreateMap<AddGuestDto, Guest>();
+        CreateMap<UpdateGuestDto, Guest>();
+
+
+        CreateMap<Order, OrderDto>().ReverseMap();
+        CreateMap<AddOrderDto, Order>();
+        CreateMap<UpdateOrderDto, Order>();
+
+
+        CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
+        CreateMap<AddOrderStatusDto, OrderStatus>();
+        CreateMap<UpdateOrderStatusDto, OrderStatus>();
+
+        CreateMap<Position, PositionDto>().ReverseMap();
+        CreateMap<AddPositionDto, Position>();
+        CreateMap<UpdatePositionDto, Position>();
+
+        CreateMap<Room, RoomDto>().ReverseMap();
+        CreateMap<AddRoomDto, Room>();
+        CreateMap<UpdateRoomDto, Room>();
+
+        CreateMap<RoomStatus, RoomStatusDto>().ReverseMap();
+        CreateMap<AddRoomStatusDto, RoomStatus>();
+        CreateMap<UpdateRoomStatusDto, RoomStatus>();
+
+        CreateMap<RoomType, RoomTypeDto>().ReverseMap();
+        CreateMap<AddRoomTypeDto, RoomType>();
+        CreateMap<UpdateRoomTypeDto, RoomType>();
+
+        CreateMap<Staff, StaffDto>().ReverseMap();
+        CreateMap<AddStaffDto, Staff>();
+        CreateMap<UpdateStaffDto, Staff>();
+
+
+    }
+}

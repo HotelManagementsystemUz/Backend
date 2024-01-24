@@ -1,0 +1,122 @@
+﻿using Application.DTOs.HotelDtos.Room;
+
+namespace Application.Services;
+
+public class RoomService(IUnitOfWork unitOfWork, IMapper mapper) : IRoomService
+{
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+
+    public async Task AddRoomAsync(AddRoomDto room)
+    {
+        if (room is null)
+        {
+            throw new ArgumentNullException("Room is required");
+        }
+        var newRoom = _mapper.Map<Room>(room);
+        if (newRoom is null)
+        {
+            throw new CustomException("Mepped room is null");
+        }
+        var rooms = await _unitOfWork.RoomInterface.GetAllAsync();
+        if (newRoom.IsValid())
+        {
+            throw new CustomException("Room is invalid");
+        }
+        if(newRoom.IsExist(rooms))
+        {
+            throw new CustomException("Room is already exist");
+        }
+        var roomStatus = await _unitOfWork.RoomStatusInterface.GetByIdAsync(room.RoomStatusId);
+        if(roomStatus is null)
+        {
+            throw new CustomException("RoomStatus does not found");
+        }
+        var roomType = await _unitOfWork.RoomTypeInterface.GetByIdAsync(room.RoomTypeId); if(roomType is null)
+        {
+            throw new CustomException("RoomType does not found");
+        }
+
+
+        await _unitOfWork.RoomInterface.AddAsync(newRoom);
+        await _unitOfWork.SaveChangeAsync();
+
+    }
+
+    public async Task DeleteRoomAsync(int roomId)
+    {
+        if(roomId < 0)
+        {
+            throw new ArgumentNullException("RoomId manfiy bo'lmaslig kerak");
+        }
+        var room = await _unitOfWork.RoomInterface.GetByIdAsync(roomId);
+        if(room is null)
+        {
+            throw new CustomException("Room does not found");
+        }
+        await _unitOfWork.RoomInterface.DeleteAsync(roomId);
+        await _unitOfWork.SaveChangeAsync();
+    }
+
+    public async Task<List<RoomDto>> GetAllRoomAsync()
+    {
+        var rooms = await _unitOfWork.RoomInterface.GetAllAsync();
+        return rooms.Select(r => _mapper.Map<RoomDto>(r)).ToList();
+    }
+
+    public async Task<RoomDto> GetByIdRoomAsync(int roomId)
+    {
+        var room = await _unitOfWork.RoomInterface.GetByIdAsync(roomId);
+        if(room is null)
+        {
+            throw new CustomException("Room does not found");
+        }
+        return _mapper.Map<RoomDto>(room);
+    }
+
+    public async Task UpdateRoomAsync(UpdateRoomDto room)
+    {
+        if (room is null)
+        {
+            throw new ArgumentNullException("Room data is required for update");
+        }
+
+        var existingRoom = await _unitOfWork.RoomInterface.GetByIdAsync(room.Id);
+
+        if (existingRoom is null)
+        {
+            throw new CustomException($"Room with ID {room.Id} not found");
+        }
+
+        _mapper.Map(room, existingRoom);
+
+        var rooms = await _unitOfWork.RoomInterface.GetAllAsync();
+
+        if (existingRoom.IsValid())
+        {
+            throw new CustomException("Updated room is invalid");
+        }
+
+        if (existingRoom.IsExist(rooms))
+        {
+            throw new CustomException("Updated room already exists");
+        }
+
+        var roomStatus = await _unitOfWork.RoomStatusInterface.GetByIdAsync(room.RoomStatusId);
+
+        if (roomStatus is null)
+        {
+            throw new CustomException("RoomStatus not found");
+        }
+
+        var roomType = await _unitOfWork.RoomTypeInterface.GetByIdAsync(room.RoomTypeId);
+
+        if (roomType is null)
+        {
+            throw new CustomException("RoomType not found");
+        }
+
+        await _unitOfWork.RoomInterface.UpdateAsync(existingRoom);
+        await _unitOfWork.SaveChangeAsync();
+    }
+}
