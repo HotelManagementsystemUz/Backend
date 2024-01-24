@@ -30,7 +30,7 @@ public class Order:BaseEntity
     public virtual Admin Admin { get; set; } = new Admin();
 
     [ForeignKey("StatusId")]
-    public virtual OrderStatus Status { get; set; } = new OrderStatus();
+    public virtual OrderStatus Status { get; set; }
 
 
 }

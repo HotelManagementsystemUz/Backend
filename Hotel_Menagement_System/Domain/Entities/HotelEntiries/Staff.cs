@@ -1,6 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Domain.Enums;
 
 
 namespace Domain.Entities.HotelEntiries;
@@ -38,8 +39,7 @@ public class Staff:BaseEntity
     public string PhoneNumber { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(50)]
-    public string Gender { get; set; } = string.Empty;
+    public Gender Gender { get; set; }
 
     [Required]
     public DateTime BirthDate { get; set; }
@@ -52,6 +52,6 @@ public class Staff:BaseEntity
     public string Description { get; set; } = string.Empty;
 
     [ForeignKey("PositionId")]
-    public virtual Position Position { get; set; } = new Position();
+    public virtual Position Position { get; set; }
 
 }

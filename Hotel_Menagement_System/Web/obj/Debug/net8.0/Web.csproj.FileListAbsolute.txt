@@ -145,3 +145,4 @@ C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\obj\D
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\obj\Debug\net8.0\Web.genruntimeconfig.cache
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\obj\Debug\net8.0\ref\Web.dll
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\obj\Debug\net8.0\Web.sourcelink.json

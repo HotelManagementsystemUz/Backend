@@ -60,6 +60,7 @@ namespace Web
 
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             #endregion
 
             #region Identity
@@ -145,6 +146,7 @@ namespace Web
             builder.Services.AddTransient<IPositionService, PositionService>();
             builder.Services.AddTransient<IRoomTypeService, RoomTypeService>();
             builder.Services.AddTransient<IRoomService, RoomService>();
+            builder.Services.AddTransient<IStaffService , StaffService>();
 
             #endregion
         }

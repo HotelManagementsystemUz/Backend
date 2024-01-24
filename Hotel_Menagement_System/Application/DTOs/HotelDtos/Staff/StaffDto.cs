@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.HotelDtos.Position;
+using Domain.Enums;
 
 namespace Application.DTOs.HotelDtos.Staff
 {
@@ -32,8 +33,7 @@ namespace Application.DTOs.HotelDtos.Staff
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Iltimos, jinsingizni kiriting.")]
-        [StringLength(50, ErrorMessage = "Jinsingiz 50 ta belgidan ko'p bo'lishi mumkin emas.")]
-        public string Gender { get; set; } = string.Empty;
+        public Gender Gender { get; set; }
 
         [Required(ErrorMessage = "Iltimos, tug'ilgan kuningizni kiriting.")]
         public DateTime BirthDate { get; set; }

@@ -20,7 +20,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
         await _dbSet.AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
         return entity;
     }
 
