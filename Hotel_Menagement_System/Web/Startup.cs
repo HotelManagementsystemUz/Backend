@@ -147,6 +147,8 @@ namespace Web
             builder.Services.AddTransient<IRoomTypeService, RoomTypeService>();
             builder.Services.AddTransient<IRoomService, RoomService>();
             builder.Services.AddTransient<IStaffService , StaffService>();
+            builder.Services.AddTransient<IOrderStatusService , OrderStatusService>();
+            builder.Services.AddTransient<IAdminService,  AdminService>();
 
             #endregion
         }

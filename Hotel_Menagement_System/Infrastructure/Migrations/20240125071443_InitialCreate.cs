@@ -20,6 +20,9 @@ namespace Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    Roles = table.Column<int>(type: "integer", nullable: false),
                     Address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
@@ -301,7 +304,7 @@ namespace Infrastructure.Migrations
                     Email = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     PositionId = table.Column<int>(type: "integer", nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
-                    Gender = table.Column<int>(type: "integer", maxLength: 50, nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Description = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: false)

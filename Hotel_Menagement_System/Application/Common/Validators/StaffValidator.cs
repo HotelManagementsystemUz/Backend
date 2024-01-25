@@ -21,7 +21,8 @@ public static class StaffValidator
                       s.PositionId == staff.PositionId &&
                       s.Address ==staff.Address &&
                       s.BirthDate == staff.BirthDate &&
-                      s.Username == staff.Username 
+                      s.Username == staff.Username  &&
+                      s.Id != staff.Id
         );
 
 }
