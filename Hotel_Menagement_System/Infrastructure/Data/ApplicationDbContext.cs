@@ -17,6 +17,7 @@ namespace Infrastructure.Data
         public DbSet<Room> Rooms { get; set; }  
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
 
 
 

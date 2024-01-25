@@ -21,6 +21,7 @@ public interface IUnitOfWork:IDisposable
     IRoomTypeInterface RoomTypeInterface { get; }
 
     IStaffInterface StaffInterface { get; }
+    IOrganizitionInterface OrganizitionInterface { get; }
 
 
     Task SaveChangeAsync();

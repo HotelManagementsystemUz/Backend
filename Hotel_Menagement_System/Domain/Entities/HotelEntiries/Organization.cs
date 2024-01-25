@@ -6,20 +6,21 @@ public  class Organization:BaseEntity
 {
     [Required, MinLength(5) , MaxLength(200)]
     public string OrganizationName { get; set; } = string.Empty;
-    [Required, MinLength(5), MaxLength(200)]
+    [Required, MinLength(8), MaxLength(15)]
     public string PhoneNumber { get; set; } = string.Empty;
+    [Required, MinLength(2), MaxLength(200)]
 
-    [Required, MinLength(1), MaxLength(200)]
-    public string INN = string.Empty;
+    public string Inn { get; set; } = string.Empty;
+    [Required, MinLength(2), MaxLength(200)]
 
-    [Required, MinLength(1), MaxLength(200)]
-    public string DerektorI_F_Sh = string.Empty;
+    public string DerektorFullName { get; set; } = string.Empty;
+    [Required, MinLength(2), MaxLength(200)]
 
-    [Required, MinLength(1), MaxLength(200)]
-    public string Yuridik_Address = string.Empty;
+    public string YuridikAddress { get; set; } = string.Empty;
+    [Required, MinLength(3), MaxLength(200)]
 
-    [Required, MinLength(1), MaxLength(200)]
-    public string OtherInformation = string.Empty;
-    public DateTime AddedDateTime { get; set; }
-    public DateTime UpdatedDateTime { get; set; }
+    public string OtherInformation { get; set; } = string.Empty;
+    public DateTime AddedDateTime { get; set; } = DateTime.Now;
+    public DateTime UpdatedDateTime { get; set; } =DateTime.Now;
 }
+

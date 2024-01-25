@@ -12,7 +12,8 @@ public class UnitOfWork(ApplicationDbContext dbContext,
                         IRoomInterface roomInterface, 
                         IRoomStatusInterface roomStatusInterface,
                         IRoomTypeInterface roomTypeInterface,
-                        IStaffInterface staffInterface) : IUnitOfWork
+                        IStaffInterface staffInterface,
+                        IOrganizitionInterface organizitionInterface) : IUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
@@ -34,6 +35,7 @@ public class UnitOfWork(ApplicationDbContext dbContext,
 
     public IStaffInterface StaffInterface { get; } = staffInterface;
 
+    public IOrganizitionInterface OrganizitionInterface { get; } = organizitionInterface;
 
     public void Dispose()
          => GC.SuppressFinalize(this);

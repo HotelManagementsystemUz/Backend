@@ -137,6 +137,8 @@ namespace Web
             builder.Services.AddTransient<IRoomTypeInterface, RoomTypeRepository>();
 
             builder.Services.AddTransient<IStaffInterface, StaffRepository>();
+            builder.Services.AddTransient<IOrganizitionInterface, OrganizitionRepository>();
+
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 
