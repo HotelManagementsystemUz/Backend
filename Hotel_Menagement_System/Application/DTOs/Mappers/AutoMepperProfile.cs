@@ -4,6 +4,7 @@ using Application.DTOs.HotelDtos.Admin;
 using Application.DTOs.HotelDtos.Guest;
 using Application.DTOs.HotelDtos.Order;
 using Application.DTOs.HotelDtos.OrderStatus;
+using Application.DTOs.HotelDtos.Organization;
 using Application.DTOs.HotelDtos.Position;
 using Application.DTOs.HotelDtos.Room;
 using Application.DTOs.HotelDtos.RoomStatus;
@@ -56,6 +57,10 @@ public class AutoMepperProfile:Profile
         CreateMap<Staff, StaffDto>().ReverseMap();
         CreateMap<AddStaffDto, Staff>();
         CreateMap<UpdateStaffDto, Staff>();
+
+        CreateMap<Organization, OrganizationDto>().ReverseMap();
+        CreateMap<AddOrganizationDto, Organization>();
+        CreateMap<UpdateOrganizationDto, Organization>();
 
 
     }

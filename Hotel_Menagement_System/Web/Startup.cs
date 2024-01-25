@@ -151,6 +151,7 @@ namespace Web
             builder.Services.AddTransient<IStaffService , StaffService>();
             builder.Services.AddTransient<IOrderStatusService , OrderStatusService>();
             builder.Services.AddTransient<IAdminService,  AdminService>();
+            builder.Services.AddTransient<IOrganizationService, OrganizationService>();
 
             #endregion
         }

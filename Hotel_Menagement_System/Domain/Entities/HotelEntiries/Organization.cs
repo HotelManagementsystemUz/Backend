@@ -4,7 +4,7 @@ namespace Domain.Entities.HotelEntiries;
 
 public  class Organization:BaseEntity
 {
-    [Required, MinLength(5) , MaxLength(200)]
+    [Required, MinLength(3) , MaxLength(200)]
     public string OrganizationName { get; set; } = string.Empty;
     [Required, MinLength(8), MaxLength(15)]
     public string PhoneNumber { get; set; } = string.Empty;
