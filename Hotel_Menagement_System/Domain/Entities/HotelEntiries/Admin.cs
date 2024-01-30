@@ -21,6 +21,10 @@ public class Admin:BaseEntity
     [Required]
     [MaxLength (15)]
     public string PhoneNumber {  get; set; } = string.Empty;
+    //[Required]
+    //[MaxLength(30)]
+    //[MinLength(4)]
+    //public string Password { get; set; } = string.Empty;
 
     public Roles Roles { get; set; } = Roles.Admin;
 

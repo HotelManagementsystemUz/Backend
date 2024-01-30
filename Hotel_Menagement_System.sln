@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Hotel_Menagement_System\Application\Application.csproj", "{9E2A68E5-5ED7-41D0-AF6E-29C202916C5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Hotel_Menagement_System\Application\Application.csproj", "{9E2A68E5-5ED7-41D0-AF6E-29C202916C5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Hotel_Menagement_System\Domain\Domain.csproj", "{1725D6E0-A240-495A-BA40-6B03980AA917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Hotel_Menagement_System\Domain\Domain.csproj", "{1725D6E0-A240-495A-BA40-6B03980AA917}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Hotel_Menagement_System\Infrastructure\Infrastructure.csproj", "{D435FF6F-4151-41EE-ABFD-D833FC16154F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Hotel_Menagement_System\Infrastructure\Infrastructure.csproj", "{D435FF6F-4151-41EE-ABFD-D833FC16154F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Hotel_Menagement_System\Web\Web.csproj", "{4CEB5D7E-3E04-4C8E-834A-659532049B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Hotel_Menagement_System\Web\Web.csproj", "{4CEB5D7E-3E04-4C8E-834A-659532049B22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel_Menagement_System.Test", "Hotel_Menagement_System.Test\Hotel_Menagement_System.Test.csproj", "{E5D88E02-E900-434D-9196-958BCF9BB722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4CEB5D7E-3E04-4C8E-834A-659532049B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CEB5D7E-3E04-4C8E-834A-659532049B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CEB5D7E-3E04-4C8E-834A-659532049B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5D88E02-E900-434D-9196-958BCF9BB722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5D88E02-E900-434D-9196-958BCF9BB722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5D88E02-E900-434D-9196-958BCF9BB722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5D88E02-E900-434D-9196-958BCF9BB722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
