@@ -7,8 +7,7 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
 public class StaffController(IStaffService staffService) : ControllerBase
 {
     public IStaffService _staffService { get; } = staffService;
@@ -27,7 +26,7 @@ public class StaffController(IStaffService staffService) : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-  
+
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
@@ -47,18 +46,18 @@ public class StaffController(IStaffService staffService) : ControllerBase
     {
         try
         {
-            var staff =  await _staffService.GetByIdStaff(id);
-            return Ok(staff); 
+            var staff = await _staffService.GetByIdStaff(id);
+            return Ok(staff);
         }
-        catch(NotFoundException ex)
+        catch (NotFoundException ex)
         {
             return BadRequest(ex.Message);
         }
-        catch(CustomException ex)
+        catch (CustomException ex)
         {
             return BadRequest(ex.Message);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
@@ -69,13 +68,13 @@ public class StaffController(IStaffService staffService) : ControllerBase
         try
         {
             var staffs = await _staffService.GetAllStaffAsync();
-            if(staffs == null)
+            if (staffs == null)
             {
                 return NoContent();
             }
             return Ok(staffs);
         }
-        catch(CustomException ex)
+        catch (CustomException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -128,11 +127,65 @@ public class StaffController(IStaffService staffService) : ControllerBase
         {
             return NotFound(ex.Message);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 
         }
+
+    }
+
+    [HttpGet("pagination-staff")]
+    public async Task<IActionResult> Pagination(int page = 1, int pageSize = 10)
+    {
+        if (page < 1 || pageSize < 1)
+        {
+            return BadRequest("Invalid page or pageSize parameters.");
+        }
+
+        var staffs = await _staffService.GetAllStaffAsync();
+
+        var totalCount = staffs.Count;
+        var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+        if (page > totalPages)
+        {
+            return BadRequest("Requested page is out of bounds.");
+        }
+
+        var organizationPerPage = staffs
+            .OrderBy(o => o.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var result = new
+        {
+            Data = organizationPerPage,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = page
+        };
+
+        return Ok(result);
+    }
+    [HttpGet("filter")]
+    public async Task<IActionResult> FilterStaff([FromQuery] string searchText)
+    {
+        try
+        {
+            var filteredStaff = await _staffService.FilterStaff(searchText);
+            return Ok(filteredStaff);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+
 
     }
 }

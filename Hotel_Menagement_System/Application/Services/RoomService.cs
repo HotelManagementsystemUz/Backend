@@ -58,6 +58,31 @@ public class RoomService(IUnitOfWork unitOfWork, IMapper mapper) : IRoomService
         await _unitOfWork.SaveChangeAsync();
     }
 
+    public async Task<List<RoomDto>> FilterRooms(string searchText)
+    {
+        var rooms = await _unitOfWork.RoomInterface.GetAllAsync();
+
+        var roomTypes = await _unitOfWork.RoomTypeInterface.GetAllAsync();
+        var roomStatus = await _unitOfWork.RoomStatusInterface.GetAllAsync();
+
+        var filteredRooms = rooms.Where(r =>
+            r.Number.ToString().Contains(searchText) ||
+            roomTypes.Any(rt => rt.Id == r.RoomTypeId && rt.Name.Contains(searchText)) ||
+            roomStatus.Any(rs => rs.Id == r.RoomStatusId).ToString().Contains(searchText) ||
+            r.Description.Contains(searchText)||
+            r.Price.ToString().Contains(searchText)
+        ).ToList();
+
+        if(filteredRooms.Count <= 0)
+        {
+            throw new NotFoundException("Room topilmadi ");
+        }
+
+        var result = filteredRooms.Select(r => _mapper.Map<RoomDto>(r)).ToList();
+        return result;
+    }
+
+
     public async Task<List<RoomDto>> GetAllRoomAsync()
     {
         var rooms = await _unitOfWork.RoomInterface.GetAllAsync();

@@ -1,6 +1,4 @@
-﻿using Application.DTOs.HotelDtos.RoomStatus;
-using Application.DTOs.HotelDtos.RoomType;
-using System.ComponentModel.DataAnnotations;
+﻿
 
 namespace Application.DTOs.HotelDtos.Room;
 
@@ -21,9 +19,4 @@ public class RoomDto:BaseDto
     [Required(ErrorMessage = "Xonaning holati identifikatorini kiriting.")]
     public int RoomStatusId { get; set; }
 
-    //// Xonaning turi ma'lumotlari
-    //public RoomTypeDto RoomType { get; set; }
-
-    //// Xonaning holati ma'lumotlari
-    //public RoomStatusDto RoomStatus { get; set; }
 }

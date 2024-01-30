@@ -7,13 +7,12 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
 public class OrderController(IOrderService orderService) : ControllerBase
 {
     private readonly IOrderService _orderService = orderService;
 
-    [HttpPost]
+    [HttpPost("add-order")]
     public async Task<IActionResult> AddOrder([FromBody] AddOrderDto orderDto)
     {
         try
@@ -31,7 +30,7 @@ public class OrderController(IOrderService orderService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-order{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
         try
@@ -49,7 +48,7 @@ public class OrderController(IOrderService orderService) : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("get-all-orders")]
     public async Task<IActionResult> GetAllOrders()
     {
         try
@@ -67,7 +66,7 @@ public class OrderController(IOrderService orderService) : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-order/{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
         try
@@ -85,7 +84,7 @@ public class OrderController(IOrderService orderService) : ControllerBase
         }
     }
 
-    [HttpPut]
+    [HttpPut("update-order")]
     public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderDto orderDto)
     {
         try

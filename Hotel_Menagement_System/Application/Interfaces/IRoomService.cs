@@ -1,6 +1,7 @@
 ﻿
 
 using Application.DTOs.HotelDtos.Room;
+using Application.DTOs.HotelDtos.Staff;
 
 namespace Application.Interfaces;
 
@@ -11,4 +12,5 @@ public interface IRoomService
     Task AddRoomAsync(AddRoomDto room);
     Task DeleteRoomAsync(int roomId);
     Task UpdateRoomAsync(UpdateRoomDto room);
+    Task<List<RoomDto>> FilterRooms(string searchText);
 }

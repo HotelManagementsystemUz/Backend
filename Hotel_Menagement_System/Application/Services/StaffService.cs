@@ -108,4 +108,27 @@ public class StaffService(IUnitOfWork unitOfWork,
         await _unitOfWork.StaffInterface.UpdateAsync(staff);
         await _unitOfWork.SaveChangeAsync();
     }
+    public async Task<List<StaffDto>> FilterStaff(string searchText)
+    {
+        var staffList = await _unitOfWork.StaffInterface.GetAllAsync();
+        var filteredStaffList = staffList.Where(s =>
+            s.FirstName.Contains(searchText) ||
+            s.LastName.Contains(searchText) ||
+            s.Username.Contains(searchText) ||
+            s.Email.Contains(searchText) ||
+            s.PhoneNumber.Contains(searchText) ||
+            s.BirthDate.ToString().Contains(searchText) || 
+            s.Address.Contains(searchText) ||
+            s.Description.Contains(searchText)
+        ).ToList();
+
+        if(filteredStaffList.Count <= 0)
+        {
+            throw new NotFoundException("Bunday hodim topilmadi");
+        }
+
+        var result = filteredStaffList.Select(s => _mapper.Map<StaffDto>(s)).ToList();
+        return result;
+    }
+
 }

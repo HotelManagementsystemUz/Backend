@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Application.Services;
 
 public class GuestService : IGuestService
@@ -59,6 +61,35 @@ public class GuestService : IGuestService
 
         await _unitOfWork.GuestInterface.DeleteAsync(id);
         await _unitOfWork.SaveChangeAsync();
+    }
+
+    public async Task<List<GuestDto>> FilterGuests(string searchText)
+    {
+        var guests = await _unitOfWork.GuestInterface.GetAllAsync();
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            return guests.Select(x => _mapper.Map<GuestDto>(x)).ToList();
+        }
+
+        searchText = searchText.ToLower();
+
+        var filteredGuests = guests.Where(x =>
+            x.FirstName.ToLower().Contains(searchText) ||
+            x.LastName.ToLower().Contains(searchText) ||
+            x.FatherName.ToLower().Contains(searchText) ||
+            x.CITIZENSHIP.ToLower().Contains(searchText) ||
+            x.Passport.ToLower().Contains(searchText) ||
+            x.Address.ToLower().Contains(searchText) ||
+            x.PhoneNumber.ToLower().Contains(searchText) ||
+            x.BirthDate.ToString().ToLower().Contains(searchText.ToLower())
+        ).ToList();
+        if(filteredGuests.Count <= 0)
+        {
+            throw new NotFoundException("Bunday mehmon topilmadi");
+        }
+
+        return filteredGuests.Select(x => _mapper.Map<GuestDto>(x)).ToList();
     }
 
     public async Task<List<GuestDto>> GetAllAsync()

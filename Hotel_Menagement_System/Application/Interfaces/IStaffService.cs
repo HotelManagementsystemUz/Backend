@@ -9,4 +9,5 @@ public interface IStaffService
     Task AddAsync(AddStaffDto dto);
     Task DeleteAsync(int id);
     Task UpdateAsync(UpdateStaffDto dto);
-}
+    Task<List<StaffDto>> FilterStaff(string searchText);
+ }

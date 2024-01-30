@@ -79,7 +79,6 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = IdentityRoles.ADMIN)]
     [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     [HttpPut("update-admin")]
     public async Task<IActionResult> UpdateAdmin(UpdateAdminDto dto)
@@ -102,7 +101,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+    [Authorize(Roles = "ADMIN, SuperAdmin")]
     [HttpDelete("delete-admin/{id}")]
     public async Task<IActionResult> DeleteAdminAsync(int id)
     {

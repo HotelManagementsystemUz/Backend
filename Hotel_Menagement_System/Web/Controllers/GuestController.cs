@@ -7,8 +7,8 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
+
 public class GuestController : ControllerBase
 {
     private readonly IGuestService _guestService;
@@ -18,7 +18,7 @@ public class GuestController : ControllerBase
         _guestService = guestService ?? throw new ArgumentNullException(nameof(guestService));
     }
 
-    [HttpPost]
+    [HttpPost("add-guest")]
     public async Task<IActionResult> AddGuest([FromBody] AddGuestDto dto)
     {
         try
@@ -40,7 +40,7 @@ public class GuestController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("get-all-guests")]
     public async Task<IActionResult> GetAllGuests()
     {
         try
@@ -58,7 +58,7 @@ public class GuestController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-guest/{id}")]
     public async Task<IActionResult> GetGuestById(int id)
     {
         try
@@ -76,7 +76,7 @@ public class GuestController : ControllerBase
         }
     }
 
-    [HttpPut()]
+    [HttpPut("update-guest")]
     public async Task<IActionResult> UpdateGuest(UpdateGuestDto dto)
     {
         try
@@ -98,7 +98,7 @@ public class GuestController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-guest/{id}")]
     public async Task<IActionResult> DeleteGuest(int id)
     {
         try
@@ -113,6 +113,59 @@ public class GuestController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+
+    [HttpGet("pagination-guest")]
+    public async Task<IActionResult> Pagination(int page = 1, int pageSize = 10)
+    {
+        if (page < 1 || pageSize < 1)
+        {
+            return BadRequest("Invalid page or pageSize parameters.");
+        }
+
+        var guests = await _guestService.GetAllAsync();
+
+        var totalCount = guests.Count;
+        var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+        if (page > totalPages)
+        {
+            return BadRequest("Requested page is out of bounds.");
+        }
+
+        var organizationPerPage = guests
+            .OrderBy(o => o.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var result = new
+        {
+            Data = organizationPerPage,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = page
+        };
+
+        return Ok(result);
+    }
+    [HttpGet("filter")] 
+    public async Task<IActionResult> FilterGuests([FromQuery] string searchText)
+    {
+        try
+        {
+            var filteredGuests = await _guestService.FilterGuests(searchText);
+            return Ok(filteredGuests); 
+        }
+        catch(NotFoundException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}"); 
         }
     }
 }

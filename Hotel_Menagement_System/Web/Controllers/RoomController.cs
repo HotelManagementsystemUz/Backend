@@ -7,13 +7,13 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
+
 public class RoomController(IRoomService roomService) : ControllerBase
 {
     private readonly IRoomService _roomService = roomService;
 
-    [HttpPost("AddRoom")]
+    [HttpPost("add-room")]
     public async Task<IActionResult> AddRoom([FromBody] AddRoomDto roomDto)
     {
         try
@@ -31,7 +31,7 @@ public class RoomController(IRoomService roomService) : ControllerBase
         }
     }
 
-    [HttpGet("GetAllRooms")]
+    [HttpGet("get-all-rooms")]
     public async Task<IActionResult> GetAllRooms()
     {
         try
@@ -99,6 +99,59 @@ public class RoomController(IRoomService roomService) : ControllerBase
         catch(Exception ex)
         {
             return StatusCode(500, $"{ex.Message} Internal server error");
+        }
+    }
+
+
+    [HttpGet("pagination-room")]
+    public async Task<IActionResult> Pagination(int page = 1, int pageSize = 10)
+    {
+        if (page < 1 || pageSize < 1)
+        {
+            return BadRequest("Invalid page or pageSize parameters.");
+        }
+
+        var rooms = await _roomService.GetAllRoomAsync();
+
+        var totalCount = rooms.Count;
+        var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+        if (page > totalPages)
+        {
+            return BadRequest("Requested page is out of bounds.");
+        }
+
+        var organizationPerPage = rooms
+            .OrderBy(o => o.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var result = new
+        {
+            Data = organizationPerPage,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = page
+        };
+
+        return Ok(result);
+    }
+    [HttpGet("filter")]
+    public async Task<IActionResult> FilterStaff([FromQuery] string searchText)
+    {
+        try
+        {
+            var filteredRooms = await _roomService.FilterRooms(searchText);
+            return Ok(filteredRooms);
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 }

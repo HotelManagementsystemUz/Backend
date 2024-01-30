@@ -7,13 +7,13 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
+
 public class PositionController(IPositionService positionService) : ControllerBase
 {
     private readonly IPositionService _positionService = positionService;
 
-    [HttpGet]
+    [HttpGet("get-all-positions")]
     public async Task<IActionResult> GetAllAsync()
     {
         try
@@ -32,7 +32,7 @@ public class PositionController(IPositionService positionService) : ControllerBa
             return BadRequest(ex.Message);
         }
     }
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-position/{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -51,7 +51,7 @@ public class PositionController(IPositionService positionService) : ControllerBa
             return BadRequest(ex.Message);
         }
     }
-    [HttpPost]
+    [HttpPost("add-position")]
     public async Task<IActionResult> AddPosition([FromBody] AddPositionDto dto)
     {
         try
@@ -73,7 +73,7 @@ public class PositionController(IPositionService positionService) : ControllerBa
         }
     }
 
-    [HttpPut]
+    [HttpPut("update-position")]
     public async Task<IActionResult> UpdatePosition([FromBody] UpdatePositionDto dto)
     {
         try
@@ -91,7 +91,7 @@ public class PositionController(IPositionService positionService) : ControllerBa
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-position{id}")]
     public async Task<IActionResult> DeletePositionById(int id)
     {
         try

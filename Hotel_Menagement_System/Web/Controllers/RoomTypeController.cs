@@ -8,14 +8,14 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
+
 public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBase
 {
     private readonly IRoomTypeService _roomTypeService = roomTypeService;
 
 
-    [HttpGet]
+    [HttpGet("get-all-roomtype")]
     public async Task<IActionResult> GetAllAsync()
     {
         try
@@ -38,7 +38,7 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
             return BadRequest(ex.Message);
         }
     }
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-roomtype{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         try
@@ -59,7 +59,7 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
             return BadRequest(ex.Message);
         }
     }
-    [HttpPost]
+    [HttpPost("add-roomtype")]
     public async Task<IActionResult> AddAsync(AddRoomTypeDto dto)
     {
         try
@@ -88,7 +88,7 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
             return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
     }
-    [HttpPut]
+    [HttpPut("update-roomtype")]
 
     public async Task<IActionResult> UpdateAsync(UpdateRoomTypeDto dto)
     {
@@ -119,7 +119,7 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-roomtype{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try

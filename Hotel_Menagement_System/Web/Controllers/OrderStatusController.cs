@@ -7,8 +7,7 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
 public class OrderStatusController(IOrderStatusService orderStatusService) : ControllerBase
 {
     private readonly IOrderStatusService _orderStatusService = orderStatusService;

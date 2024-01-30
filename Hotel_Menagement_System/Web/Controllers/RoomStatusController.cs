@@ -8,15 +8,14 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
-[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+[Authorize(Roles = "ADMIN, SuperAdmin")]
+
 public class RoomStatusController(IRoomStatusService roomStatusService) : ControllerBase
 {
     private readonly IRoomStatusService _roomStatusService = roomStatusService;
 
-    [HttpPost]
 
-    [HttpPost]
+    [HttpPost("add-room-status")]
     public async Task<IActionResult> AddRoomStatusAsync(AddRoomStatusDto dto)
     {
         try
@@ -44,7 +43,7 @@ public class RoomStatusController(IRoomStatusService roomStatusService) : Contro
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("get-by-id-roomstatus{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try
@@ -68,7 +67,7 @@ public class RoomStatusController(IRoomStatusService roomStatusService) : Contro
         }
     }
 
-    [HttpGet]
+    [HttpGet("get-all-rooms")]
     public async Task<IActionResult> GetAllRoomStatusAsync()
     {
         try
@@ -86,7 +85,7 @@ public class RoomStatusController(IRoomStatusService roomStatusService) : Contro
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-roomstatus{id}")]
     public async Task<IActionResult> GetByIdRoomStatusAsync(int id)
     {
         try
@@ -104,7 +103,7 @@ public class RoomStatusController(IRoomStatusService roomStatusService) : Contro
         }
     }
 
-    [HttpPut]
+    [HttpPut("update-roomstatus")]
     public async Task<IActionResult> UpdateRoomStatusAsync(UpdateRoomStatusDto dto)
     {
         try
