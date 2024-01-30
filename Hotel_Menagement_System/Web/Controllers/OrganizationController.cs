@@ -1,11 +1,15 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Constants;
+using Application.Common.Exceptions;
 using Application.DTOs.HotelDtos.Organization;
 using Domain.Entities.HotelEntiries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = IdentityRoles.ADMIN)]
+[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
 public class OrganizationController(IOrganizationService organizationService) : ControllerBase
 {
     private readonly IOrganizationService _organizationService = organizationService;

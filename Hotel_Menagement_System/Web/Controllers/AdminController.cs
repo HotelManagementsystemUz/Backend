@@ -1,5 +1,7 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Constants;
+using Application.Common.Exceptions;
 using Application.DTOs.HotelDtos.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Web.Controllers;
@@ -10,6 +12,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
 {
     private readonly IAdminService _adminService = adminService;
 
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     [HttpPost("add-admin")] 
     public async Task<IActionResult> AddAdmin(AddAdminDto dto)
     {
@@ -31,6 +34,8 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+
     [HttpGet("get-all-admin")]
     public async Task<IActionResult> GetAllAsync()
     {
@@ -52,7 +57,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
@@ -74,7 +79,8 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = IdentityRoles.ADMIN)]
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     [HttpPut("update-admin")]
     public async Task<IActionResult> UpdateAdmin(UpdateAdminDto dto)
     {
@@ -96,7 +102,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     [HttpDelete("delete-admin/{id}")]
     public async Task<IActionResult> DeleteAdminAsync(int id)
     {

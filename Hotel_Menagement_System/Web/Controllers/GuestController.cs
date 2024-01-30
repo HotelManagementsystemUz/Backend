@@ -1,115 +1,118 @@
 ﻿
+using Application.Common.Constants;
 using Application.Common.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize(Roles = IdentityRoles.ADMIN)]
+[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
+public class GuestController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class GuestController : ControllerBase
+    private readonly IGuestService _guestService;
+
+    public GuestController(IGuestService guestService)
     {
-        private readonly IGuestService _guestService;
+        _guestService = guestService ?? throw new ArgumentNullException(nameof(guestService));
+    }
 
-        public GuestController(IGuestService guestService)
+    [HttpPost]
+    public async Task<IActionResult> AddGuest([FromBody] AddGuestDto dto)
+    {
+        try
         {
-            _guestService = guestService ?? throw new ArgumentNullException(nameof(guestService));
+            await _guestService.AddAsync(dto);
+            return Ok("Guest added successfully");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddGuest([FromBody] AddGuestDto dto)
+        catch (ArgumentNullException ex)
         {
-            try
-            {
-                await _guestService.AddAsync(dto);
-                return Ok("Guest added successfully");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (CustomException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
-            }
+            return BadRequest(ex.Message);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllGuests()
+        catch (CustomException ex)
         {
-            try
-            {
-                var guests = await _guestService.GetAllAsync();
-                return Ok(guests);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
-            }
+            return BadRequest(ex.Message);
         }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetGuestById(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                var guest = await _guestService.GetByIdAsync(id);
-                return Ok(guest);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
-            }
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
         }
+    }
 
-        [HttpPut()]
-        public async Task<IActionResult> UpdateGuest(UpdateGuestDto dto)
+    [HttpGet]
+    public async Task<IActionResult> GetAllGuests()
+    {
+        try
         {
-            try
-            {
-                await _guestService.UpdateAsync(dto);
-                return Ok($"Guest updated successfully");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (CustomException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
-            }
+            var guests = await _guestService.GetAllAsync();
+            return Ok(guests);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGuest(int id)
+        catch (ArgumentNullException ex)
         {
-            try
-            {
-                await _guestService.DeleteAsync(id);
-                return Ok($"Guest with ID {id} deleted successfully");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
-            }
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetGuestById(int id)
+    {
+        try
+        {
+            var guest = await _guestService.GetByIdAsync(id);
+            return Ok(guest);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+    [HttpPut()]
+    public async Task<IActionResult> UpdateGuest(UpdateGuestDto dto)
+    {
+        try
+        {
+            await _guestService.UpdateAsync(dto);
+            return Ok($"Guest updated successfully");
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteGuest(int id)
+    {
+        try
+        {
+            await _guestService.DeleteAsync(id);
+            return Ok($"Guest with ID {id} deleted successfully");
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
         }
     }
 }

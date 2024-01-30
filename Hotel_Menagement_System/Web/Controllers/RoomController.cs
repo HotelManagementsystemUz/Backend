@@ -1,10 +1,14 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Constants;
+using Application.Common.Exceptions;
 using Application.DTOs.HotelDtos.Room;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = IdentityRoles.ADMIN)]
+[Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
 public class RoomController(IRoomService roomService) : ControllerBase
 {
     private readonly IRoomService _roomService = roomService;
