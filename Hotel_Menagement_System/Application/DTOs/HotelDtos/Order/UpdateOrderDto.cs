@@ -1,5 +1,4 @@
-﻿using Application.DTOs.HotelDtos.Admin;
-using Application.DTOs.HotelDtos.Guest;
+﻿using Application.DTOs.HotelDtos.Guest;
 using Application.DTOs.HotelDtos.OrderStatus;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,7 +25,6 @@ public class UpdateOrderDto:BaseDto
     public GuestDto Guest { get; set; } = new GuestDto();
 
     // Admin uchun ma'lumotlar
-    public AdminDto Admin { get; set; } = new AdminDto();
 
     // Buyurtma holati ma'lumotlari
     public OrderStatusDto Status { get; set; } = new OrderStatusDto();

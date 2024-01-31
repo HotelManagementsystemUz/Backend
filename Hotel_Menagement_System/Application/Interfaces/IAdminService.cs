@@ -1,12 +1,14 @@
-﻿using Application.DTOs.HotelDtos.Admin;
+﻿using Application.DTOs.ApplicationUserDtos;
 
 namespace Application.Interfaces;
 
 public interface IAdminService
 {
-    Task<List<AdminDto>> GetAllAdminsAsync();
-    Task<AdminDto> GetByIdAdminAsync(int id);
-    Task AddAdminAsync(AddAdminDto dto);
-    Task DeleteAdminAsync(int id);
-    Task UpdateAdminAsync(UpdateAdminDto dto);
+    Task CreateAsync(RegisterUser registerUser);
+    Task<LoginResult> LoginAsync(LoginUser loginUser);
+    Task LogoutAsync(LogoutUser logoutUser);
+
+    Task ChangePasswordAsync(ChangePasswordUser changePasswordUser);
+    Task DeleteAccountAsync(LoginUser loginUser);
+
 }

@@ -40,7 +40,6 @@ public class OrderService(IMapper mapper,
             throw new CustomException("Order is already exist");
         }
 
-        order.Admin = null;
         order.Status = null;
         order.Guest = null;
         await _unitOfWork.OrderInterface.AddAsync(order);
@@ -114,7 +113,6 @@ public class OrderService(IMapper mapper,
 
         }
       
-        order.Admin = null;
         order.Status = null;
         order.Guest = null;
         await _unitOfWork.OrderInterface.UpdateAsync(order);

@@ -4,7 +4,6 @@ namespace Infrastructure.Interfaces;
 
 public interface IUnitOfWork:IDisposable
 {
-    IAdminInterface AdminInterface { get; }
 
     IGuestInterface GuestInterface { get; }
 

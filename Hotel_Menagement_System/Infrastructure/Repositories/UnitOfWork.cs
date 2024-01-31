@@ -4,7 +4,6 @@ using Infrastructure.Interfaces;
 namespace Infrastructure.Repositories;
 
 public class UnitOfWork(ApplicationDbContext dbContext,
-                        IAdminInterface adminInterface,
                         IGuestInterface guestInterface,
                         IOrderInterface orderInterface, 
                         IOrderStatusInterface orderStatusInterface,
@@ -17,7 +16,6 @@ public class UnitOfWork(ApplicationDbContext dbContext,
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    public IAdminInterface AdminInterface { get; } = adminInterface;
 
     public IGuestInterface GuestInterface { get; } = guestInterface;
 

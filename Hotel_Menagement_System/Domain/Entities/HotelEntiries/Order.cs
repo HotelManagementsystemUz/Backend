@@ -26,8 +26,6 @@ public class Order:BaseEntity
     [ForeignKey("GuestId")]
     public virtual Guest Guest { get; set; } = new Guest();
 
-    [ForeignKey("AdminId")]
-    public virtual Admin Admin { get; set; } = new Admin();
 
     [ForeignKey("StatusId")]
     public virtual OrderStatus Status { get; set; }

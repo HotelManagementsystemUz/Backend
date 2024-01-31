@@ -67,7 +67,7 @@ public class StaffService(IUnitOfWork unitOfWork,
         {
             throw new NotFoundException("Staff does not found");
         }
-        return staffs.Select(s => _mapper.Map<StaffDto>(s)).ToList();
+        return staffs.Select(_mapper.Map<StaffDto>).ToList();
     }
 
     public async Task<StaffDto> GetByIdStaff(int id)

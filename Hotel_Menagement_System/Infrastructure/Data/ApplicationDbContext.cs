@@ -9,7 +9,6 @@ namespace Infrastructure.Data
         : IdentityDbContext<ApplicationUser>(options)
     {
         // Your dbsets here
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }

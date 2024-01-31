@@ -124,7 +124,6 @@ namespace Web
 
             builder.Services.AddScoped<IIdentityService, IdentityService>();
 
-            builder.Services.AddTransient<IAdminInterface, AdminRepository>();
             builder.Services.AddTransient<IGuestInterface, GuestRepository>();
 
             builder.Services.AddTransient<IOrderInterface, OrderRepository>();

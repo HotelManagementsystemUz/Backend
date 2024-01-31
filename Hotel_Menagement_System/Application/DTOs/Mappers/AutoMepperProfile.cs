@@ -1,8 +1,5 @@
 ﻿
 
-using Application.DTOs.HotelDtos.Admin;
-using Application.DTOs.HotelDtos.Guest;
-using Application.DTOs.HotelDtos.Order;
 using Application.DTOs.HotelDtos.OrderStatus;
 using Application.DTOs.HotelDtos.Organization;
 using Application.DTOs.HotelDtos.Position;
@@ -10,8 +7,7 @@ using Application.DTOs.HotelDtos.Room;
 using Application.DTOs.HotelDtos.RoomStatus;
 using Application.DTOs.HotelDtos.RoomType;
 using Application.DTOs.HotelDtos.Staff;
-using AutoMapper;
-using Domain.Entities.HotelEntiries;
+
 
 namespace Application.DTOs.Mappers;
 
@@ -19,9 +15,7 @@ public class AutoMepperProfile:Profile
 {
     public AutoMepperProfile()
     {
-        CreateMap<Admin, AdminDto>().ReverseMap();
-        CreateMap<AddAdminDto, Admin>();
-        CreateMap<UpdateAdminDto, Admin>();
+     
 
 
         CreateMap<Guest, GuestDto>().ReverseMap();

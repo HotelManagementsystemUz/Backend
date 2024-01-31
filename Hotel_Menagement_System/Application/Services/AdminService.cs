@@ -1,110 +1,147 @@
-﻿using Application.DTOs.HotelDtos.Admin;
+﻿using Application.Common.Helpers;
+using Application.Common.Mappings;
+using Application.DTOs.ApplicationUserDtos;
+using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
 
-public class AdminService(IMapper mapper, IUnitOfWork unitOfWork) : IAdminService
+public class AdminService(UserManager<ApplicationUser> userManager,
+                                 IConfiguration configuration) : IAdminService
 {
-    private readonly IMapper _mapper = mapper;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task AddAdminAsync(AddAdminDto dto)
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly IConfiguration _configuration = configuration;
+
+
+
+    public async Task ChangePasswordAsync(ChangePasswordUser changePasswordUser)
     {
-        if(dto == null)
+        if (changePasswordUser is null)
         {
-            throw new ArgumentNullException("Admin is null");
+            throw new ArgumentNullException(nameof(changePasswordUser));
         }
-        var admin = _mapper.Map<Admin>(dto);    
-        if(admin == null)
+
+        var user = await _userManager.FindByEmailAsync(changePasswordUser.Email);
+        if (user is null)
         {
-            throw new CustomException("Admin did not mapped");
+            throw new NotFoundException("User not found");
         }
-        var admins = await _unitOfWork.AdminInterface.GetAllAsync();
-        if(admins == null)
+
+        var result = await _userManager.ChangePasswordAsync(user, changePasswordUser.CurrentPassword, changePasswordUser.NewPassword);
+        if (!result.Succeeded)
         {
-            throw new NotFoundException("Hech qanday admin topilmadi ");
+            throw new CustomException($"Password change failed:\n{result.Errors.ToErrorString()}");
         }
-        if (!admin.IsValid())
-        {
-            throw new CustomException("Admin is invalid");
-        }
-        if (!admin.IsExist(admins))
-        {
-            throw new CustomException("Admin is already exsit");
-        }
-        await _unitOfWork.AdminInterface.AddAsync(admin);
-        await _unitOfWork.SaveChangeAsync();
     }
 
-    public async Task DeleteAdminAsync(int id)
+    public async Task CreateAsync(RegisterUser registerUser)
     {
-        if (id <= 0)
+        if (registerUser is null)
         {
-            throw new CustomException("Id should be greater than 0");
+            throw new ArgumentNullException(nameof(registerUser));
         }
 
-        var admin = await _unitOfWork.AdminInterface.GetByIdAsync(id);
+        var user = registerUser.ToApplicationUser();
 
-        if (admin is null)
+        var result = await _userManager.CreateAsync(user, registerUser.Password);
+        if (!result.Succeeded)
         {
-            throw new ArgumentNullException("Admin not found");
+            throw new CustomException($"User creation failed:\n{result.Errors.ToErrorString()}");
         }
 
-        await _unitOfWork.AdminInterface.DeleteAsync(id);
-        await _unitOfWork.SaveChangeAsync();
+        foreach (var role in registerUser.Roles)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+        }
     }
 
-    public async Task<List<AdminDto>> GetAllAdminsAsync()
+    public async Task DeleteAccountAsync(LoginUser loginUser)
     {
-        var Admins = await _unitOfWork.AdminInterface.GetAllAsync();
-        if(Admins is null)
+        if (loginUser is null)
         {
-            throw new NotFoundException("Hech qanday admin topilmadi");
+            throw new ArgumentNullException(nameof(loginUser));
         }
-        return Admins.Select(x => _mapper.Map<AdminDto>(x)).ToList();
+
+        var user = await _userManager.FindByEmailAsync(loginUser.Email);
+        if (user is null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        await RemoveAccessToken(user);
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            throw new CustomException($"User deletion failed:\n{result.Errors.ToErrorString()}");
+        }
     }
 
-    public async Task<AdminDto> GetByIdAdminAsync(int id)
+    public async Task<LoginResult> LoginAsync(LoginUser loginUser)
     {
-        if (id <= 0)
+        if (loginUser is null)
         {
-            throw new CustomException("Id should be greater than 0");
+            throw new ArgumentNullException(nameof(loginUser));
         }
 
-        var admin = await _unitOfWork.AdminInterface.GetByIdAsync(id);
-
-        if (admin is null)
+        var user = await _userManager.FindByEmailAsync(loginUser.Email);
+        if (user is null)
         {
-            throw new ArgumentNullException("Admin not found");
+            throw new NotFoundException("User not found");
         }
-        return _mapper.Map<AdminDto>(admin);
+
+        var result = await _userManager.CheckPasswordAsync(user, loginUser.Password);
+        if (!result)
+        {
+            throw new CustomException("Invalid password");
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var token = JwtHelper.GenerateJwtToken(user, roles, _configuration);
+        await RemoveAccessToken(user);
+        await SetAccessToken(user, token);
+
+        return new LoginResult
+        {
+            FullName = $"{user.FirstName} {user.LastName}",
+            Email = user.Email!,
+            Token = token,
+            ExpireAt = TimeUzb.Now.AddMonths(1)
+        };
     }
 
-    public async Task UpdateAdminAsync(UpdateAdminDto dto)
+    public async Task LogoutAsync(LogoutUser logoutUser)
     {
+        if (logoutUser is null)
+        {
+            throw new ArgumentNullException(nameof(logoutUser));
+        }
 
-        if (dto == null)
+        var user = await _userManager.FindByEmailAsync(logoutUser.Email);
+        if (user is null)
         {
-            throw new ArgumentNullException("Admin is null");
+            throw new NotFoundException("User not found");
         }
-        var admin = _mapper.Map<Admin>(dto);
-        if (admin == null)
+
+        await RemoveAccessToken(user);
+    }
+
+    private async Task RemoveAccessToken(ApplicationUser user)
+    {
+        var result = await _userManager.RemoveAuthenticationTokenAsync(user, "Application", "AccessToken");
+        if (!result.Succeeded)
         {
-            throw new CustomException("Admin did not mapped");
+            throw new CustomException($"Access token removal failed:\n{result.Errors.ToErrorString()}");
         }
-        var admins = await _unitOfWork.AdminInterface.GetAllAsync();
-        if (admins == null)
+    }
+
+    private async Task SetAccessToken(ApplicationUser user, string token)
+    {
+        var result = await _userManager.SetAuthenticationTokenAsync(user, "Application", "AccessToken", token);
+        if (!result.Succeeded)
         {
-            throw new NotFoundException("Hech qanday admin topilmadi ");
+            throw new CustomException($"Access token setting failed:\n{result.Errors.ToErrorString()}");
         }
-        if (!admin.IsValid())
-        {
-            throw new CustomException("Admin is invalid");
-        }
-        if (!admin.IsExist(admins))
-        {
-            throw new CustomException("Admin is already exsit");
-        }
-        await _unitOfWork.AdminInterface.UpdateAsync(admin);
-        await _unitOfWork.SaveChangeAsync();
     }
 }
