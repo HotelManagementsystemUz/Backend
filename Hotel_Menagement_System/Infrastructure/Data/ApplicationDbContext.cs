@@ -22,7 +22,6 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // Your configurations here
 
             base.OnModelCreating(builder);
         }

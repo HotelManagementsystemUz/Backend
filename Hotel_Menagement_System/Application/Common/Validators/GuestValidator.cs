@@ -6,6 +6,7 @@ public static class GuestValidator
 {
     public static bool IsValidGuest(this Guest guest)
         => guest != null &&
+        guest.RoomId > 0 &&
         string.IsNullOrEmpty(guest.FirstName) &&
         string.IsNullOrEmpty(guest.LastName) &&
         string.IsNullOrEmpty(guest.PhoneNumber) &&
@@ -27,6 +28,7 @@ public static class GuestValidator
                       g.CITIZENSHIP == guest.CITIZENSHIP &&
                       g.FatherName == guest.FatherName &&
                       g.Gender == guest.Gender &&
+                      g.RoomId == guest.RoomId &&
                       g.Organization == guest.Organization &&
                       g.OrganizationName == guest.OrganizationName &&
                       g.Id != guest.Id

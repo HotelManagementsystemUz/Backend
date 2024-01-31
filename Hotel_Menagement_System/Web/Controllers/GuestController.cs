@@ -30,6 +30,10 @@ public class GuestController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (CustomException ex)
         {
             return BadRequest(ex.Message);
@@ -88,6 +92,11 @@ public class GuestController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+
         catch (CustomException ex)
         {
             return BadRequest(ex.Message);
@@ -107,6 +116,28 @@ public class GuestController : ControllerBase
             return Ok($"Guest with ID {id} deleted successfully");
         }
         catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("all-summa")]
+    public async Task<IActionResult> GetSumma(int guestId)
+    {
+        try
+        {
+            var result = await _guestService.Summa(guestId);
+            return Ok(result);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
         {
             return BadRequest(ex.Message);
         }

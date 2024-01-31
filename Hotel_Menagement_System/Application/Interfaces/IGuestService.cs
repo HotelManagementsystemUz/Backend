@@ -12,4 +12,5 @@ public interface IGuestService
     Task DeleteAsync(int id);
     Task UpdateAsync(UpdateGuestDto dto);
     Task<List<GuestDto>> FilterGuests(string searchText);
+    Task<string> Summa(int guestId);
 }

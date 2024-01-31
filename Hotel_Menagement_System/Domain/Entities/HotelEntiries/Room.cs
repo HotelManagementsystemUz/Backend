@@ -27,4 +27,5 @@ public class Room:BaseEntity
 
     [ForeignKey("RoomStatusId")]
     public virtual RoomStatus RoomStatus { get; set; }
+
 }

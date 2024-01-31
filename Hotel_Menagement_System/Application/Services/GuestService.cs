@@ -34,6 +34,12 @@ public class GuestService : IGuestService
             throw new CustomException("Guest is invalid");
         }
 
+        //var room = await _unitOfWork.RoomInterface.GetByIdAsync(guest.RoomId);
+        //if (room is null)
+        //{
+        //    throw new NotFoundException("Bunday hona mavjud emas");
+        //}
+
         var guests = await _unitOfWork.GuestInterface.GetAllAsync();
 
         if (guest.IsExistGuest(guests))
@@ -116,6 +122,23 @@ public class GuestService : IGuestService
         return _mapper.Map<GuestDto>(guest);
     }
 
+    public async Task<string> Summa(int guestId)
+    {
+        if (guestId < 0)
+        {
+            throw new CustomException("Mehmon id raqami 0 dan katta bo'lish kerak ");
+        }
+        var guest = await _unitOfWork.GuestInterface.GetByIdAsync(guestId);
+        if (guest is null)
+        {
+            throw new NotFoundException("Bunday mehmon mavjud emas");
+        }
+        var time = (DateTime.UtcNow - guest.DateOfIssue).Days;
+        var room = await _unitOfWork.RoomInterface.GetByIdAsync(guest.RoomId);
+        var result = (room.Price * time).ToString();
+        return result;
+    }
+
     public async Task UpdateAsync(UpdateGuestDto dto)
     {
         if (dto is null)
@@ -129,6 +152,8 @@ public class GuestService : IGuestService
         {
             throw new ArgumentNullException("Guest map is null here");
         }
+
+        
 
         if (guest.IsValidGuest())
         {

@@ -48,7 +48,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             throw new ArgumentNullException(nameof(id));
         }
 
-        return await _dbSet.FirstOrDefaultAsync(i => i.Id == id);
+        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public async Task UpdateAsync(TEntity entity)

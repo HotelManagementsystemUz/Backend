@@ -1,5 +1,6 @@
 ﻿using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.DTOs.HotelDtos.Guest;
 
@@ -52,6 +53,10 @@ public class UpdateGuestDto:BaseDto
     [Required(ErrorMessage = "Iltimos, tashkilot nomini kiriting.")]
     [StringLength(50, ErrorMessage = "Tashkilot nomi 50 ta belgidan ko'p bo'lishi mumkin emas.")]
     public string Organization { get; set; } = string.Empty;
+
+    [Required]
+    public int RoomId { get; set; }
+
 
     [Required(ErrorMessage = "Iltimos, jinsingizni tanlang.")]
     public Gender Gender { get; set; }

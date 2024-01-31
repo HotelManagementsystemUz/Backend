@@ -1,6 +1,7 @@
 ﻿
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Enums;
 
 namespace Domain.Entities.HotelEntiries;
@@ -60,7 +61,11 @@ public class Guest:BaseEntity
     [StringLength(50)]
     public string Organization { get; set; } = string.Empty;
 
+
     [Required]
     [StringLength(50)]
     public Gender Gender { get; set; } 
+
+    public int? RoomId { get; set; }
+    public Room Room { get; set; }
 }
