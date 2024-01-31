@@ -12,7 +12,7 @@ public class Order:BaseEntity
     public int GuestId { get; set; }
 
     [Required]
-    public int AdminId { get; set; }
+    public string AdminId { get; set; }
 
     [Required]
     public int StatusId { get; set; }

@@ -7,7 +7,7 @@ public class AddOrderDto
     public int GuestId { get; set; }
 
     [Required(ErrorMessage = "Adminni tanlanganligingizni kiriting.")]
-    public int AdminId { get; set; }
+    public string AdminId { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Holatni tanlanganligingizni kiriting.")]
     public int StatusId { get; set; }

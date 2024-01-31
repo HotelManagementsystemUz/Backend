@@ -2,13 +2,18 @@
 
 
 
+using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+
 namespace Application.Services;
 
 public class OrderService(IMapper mapper,
-                          IUnitOfWork unitOfWork) : IOrderService
+                          IUnitOfWork unitOfWork,
+                          UserManager<ApplicationUser> userManager) : IOrderService
 {
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
 
     public async Task AddOrderAsync(AddOrderDto orderDto)
     {
@@ -28,18 +33,32 @@ public class OrderService(IMapper mapper,
         {
             throw new CustomException("Order is invalid");
         }
+        var user = await _userManager.FindByIdAsync(order.AdminId);
+        if (user is null)
+        {
+            throw new NotFoundException("Admin does not found");
+        }
 
         var orderStatuses = await _unitOfWork.OrderStatusInterface.GetAllAsync();
         if (orderStatuses == null)
         {
             throw new CustomException("OrderStatuses is null");
         }
-
-        if (order.IsExist(orderStatuses.Cast<Order>()))
+        var orders = await _unitOfWork.OrderInterface.GetAllAsync();
+        if (order.IsExist(orders))
         {
             throw new CustomException("Order is already exist");
         }
-
+        var guest = await _unitOfWork.GuestInterface.GetByIdAsync(order.GuestId);
+        if (guest is null)
+        {
+            throw new NotFoundException("Guest does not found");
+        }
+        var orderStatus = await _unitOfWork.OrderStatusInterface.GetByIdAsync(order.StatusId);
+        if (orderStatus is null)
+        {
+            throw new NotFoundException("OrderStatus does not found");
+        }
         order.Status = null;
         order.Guest = null;
         await _unitOfWork.OrderInterface.AddAsync(order);
@@ -76,6 +95,18 @@ public class OrderService(IMapper mapper,
         return orders.Select(o => _mapper.Map<OrderDto>(o)).ToList();
     }
 
+    public async Task<List<OrderDto>> GetAllOrdersWithStatusAsync()
+    {
+        var orders = await _unitOfWork.OrderInterface.GetAllOrdersWithStatusAsync();
+
+        if (orders is null || !orders.Any())
+        {
+            throw new ArgumentNullException("Orders not found");
+        }
+
+        return orders.Select(o => _mapper.Map<OrderDto>(o)).ToList();
+    }
+
     public async Task<OrderDto> GetOrderByIdAsync(int id)
     {
         var order = await _unitOfWork.OrderInterface.GetByIdAsync(id);
@@ -90,6 +121,7 @@ public class OrderService(IMapper mapper,
 
     public async Task UpdateOrderAsync(UpdateOrderDto orderDto)
     {
+
         if (orderDto is null)
         {
             throw new ArgumentNullException(nameof(orderDto), "Order is null");
@@ -101,18 +133,34 @@ public class OrderService(IMapper mapper,
         {
             throw new ArgumentNullException("Order map is null");
         }
+
         if (order.IsValid())
         {
             throw new CustomException("Order is invalid");
         }
-
-        var orders = await _unitOfWork.OrderStatusInterface.GetAllAsync();
-        if (orders == null)
+        var user = await _userManager.FindByIdAsync(order.AdminId);
+        if (user is null)
         {
-            throw new CustomException("Orders is null");
-
+            throw new NotFoundException("Admin does not found");
         }
-      
+
+        var orderStatuses = await _unitOfWork.OrderStatusInterface.GetAllAsync();
+        if (orderStatuses == null)
+        {
+            throw new CustomException("OrderStatuses is null");
+        }
+
+  
+        var guest = await _unitOfWork.GuestInterface.GetByIdAsync(order.GuestId);
+        if (guest is null)
+        {
+            throw new NotFoundException("Guest does not found");
+        }
+        var orderStatus = await _unitOfWork.OrderStatusInterface.GetByIdAsync(order.StatusId);
+        if (orderStatus is null)
+        {
+            throw new NotFoundException("OrderStatus does not found");
+        }
         order.Status = null;
         order.Guest = null;
         await _unitOfWork.OrderInterface.UpdateAsync(order);

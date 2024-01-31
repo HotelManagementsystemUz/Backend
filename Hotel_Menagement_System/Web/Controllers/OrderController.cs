@@ -66,6 +66,25 @@ public class OrderController(IOrderService orderService) : ControllerBase
         }
     }
 
+
+    [HttpGet("get-all-orders-with-guest-and-status")]
+    public async Task<IActionResult> GetAllOrdersWithStatusAdnGuest()
+    {
+        try
+        {
+            var orders = await _orderService.GetAllOrdersWithStatusAsync();
+            return Ok(orders);
+        }
+        catch (CustomException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal server error");
+        }
+    }
+
     [HttpGet("get-by-id-order/{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {

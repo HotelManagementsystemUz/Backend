@@ -10,7 +10,7 @@ public class UpdateOrderDto:BaseDto
     public int GuestId { get; set; }
 
     [Required(ErrorMessage = "Adminni tanlanganligingizni kiriting.")]
-    public int AdminId { get; set; }
+    public string AdminId { get; set; }
 
     [Required(ErrorMessage = "Holatni tanlanganligingizni kiriting.")]
     public int StatusId { get; set; }
@@ -24,7 +24,6 @@ public class UpdateOrderDto:BaseDto
     // Mehmonga oid ma'lumotlar
     public GuestDto Guest { get; set; } = new GuestDto();
 
-    // Admin uchun ma'lumotlar
 
     // Buyurtma holati ma'lumotlari
     public OrderStatusDto Status { get; set; } = new OrderStatusDto();

@@ -104,6 +104,7 @@ namespace Application.Services
 
             return new LoginResult
             {
+                UserId = user.Id,
                 FullName = $"{user.FirstName} {user.LastName}",
                 Email = user.Email!,
                 Token = token,

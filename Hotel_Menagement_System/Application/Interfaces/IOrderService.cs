@@ -11,4 +11,6 @@ public interface IOrderService
     Task AddOrderAsync(AddOrderDto order);
     Task DeleteOrderAsync(int id);
     Task UpdateOrderAsync(UpdateOrderDto order);
+    Task<List<OrderDto>> GetAllOrdersWithStatusAsync();
+
 }

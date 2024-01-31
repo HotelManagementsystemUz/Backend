@@ -6,9 +6,9 @@ public static class OrderValidator
 {
     public static bool IsValid(this Order order)
         => order != null &&
-        order.AdminId >= 0 &&
         order.GuestId >= 0 &&
         order.StatusId > 0 &&
+        string.IsNullOrEmpty(order.AdminId) &&
         order.StartDate >= order.EndDate;
 
     public static bool IsExist(this Order order, IEnumerable<Order> orders)

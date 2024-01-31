@@ -10,7 +10,7 @@ public class OrderDto:BaseDto
     public int GuestId { get; set; }
 
     [Required(ErrorMessage = "Adminni tanlanganligingizni kiriting.")]
-    public int AdminId { get; set; }
+    public string AdminId { get; set; }
 
     [Required(ErrorMessage = "Holatni tanlanganligingizni kiriting.")]
     public int StatusId { get; set; }
