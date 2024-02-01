@@ -13,6 +13,10 @@ public class OrderController(IOrderService orderService) : ControllerBase
     private readonly IOrderService _orderService = orderService;
 
     [HttpPost("add-order")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddOrder([FromBody] AddOrderDto orderDto)
     {
         try
@@ -31,6 +35,11 @@ public class OrderController(IOrderService orderService) : ControllerBase
     }
 
     [HttpDelete("delete-order{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteOrder(int id)
     {
         try
@@ -49,6 +58,12 @@ public class OrderController(IOrderService orderService) : ControllerBase
     }
 
     [HttpGet("get-all-orders")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllOrders()
     {
         try
@@ -68,6 +83,12 @@ public class OrderController(IOrderService orderService) : ControllerBase
 
 
     [HttpGet("get-all-orders-with-guest-and-status")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllOrdersWithStatusAdnGuest()
     {
         try
@@ -86,6 +107,12 @@ public class OrderController(IOrderService orderService) : ControllerBase
     }
 
     [HttpGet("get-by-id-order/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetOrderById(int id)
     {
         try
@@ -104,6 +131,11 @@ public class OrderController(IOrderService orderService) : ControllerBase
     }
 
     [HttpPut("update-order")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderDto orderDto)
     {
         try

@@ -16,6 +16,12 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
 
 
     [HttpGet("get-all-roomtype")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllAsync()
     {
         try
@@ -39,6 +45,12 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
         }
     }
     [HttpGet("get-by-id-roomtype{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         try
@@ -60,6 +72,11 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
         }
     }
     [HttpPost("add-roomtype")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddAsync(AddRoomTypeDto dto)
     {
         try
@@ -89,7 +106,11 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
         }
     }
     [HttpPut("update-roomtype")]
-
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateAsync(UpdateRoomTypeDto dto)
     {
         try
@@ -120,6 +141,12 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
     }
 
     [HttpDelete("delete-roomtype{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try
@@ -142,7 +169,7 @@ public class RoomTypeController(IRoomTypeService roomTypeService) : ControllerBa
         }
         catch (CustomException)
         {
-            return NotFound(); // Use NotFound for 404 Not Found
+            return NotFound(); 
         }
         catch (Exception ex)
         {
