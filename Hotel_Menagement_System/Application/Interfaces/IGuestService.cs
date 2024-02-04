@@ -1,8 +1,4 @@
-﻿using Application.DTOs.HotelDtos.Guest;
-using Application.DTOs.HotelDtos.Room;
-using Domain.Entities.HotelEntiries;
-
-namespace Application.Interfaces;
+﻿namespace Application.Interfaces;
 
 public interface IGuestService
 {
@@ -13,4 +9,5 @@ public interface IGuestService
     Task UpdateAsync(UpdateGuestDto dto);
     Task<List<GuestDto>> FilterGuests(string searchText);
     Task<string> Summa(int guestId);
+    Task SendSMS(int guestId, string text);
 }

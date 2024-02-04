@@ -152,3 +152,5 @@ C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\D
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\nunit.framework.dll
 C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\nunit.framework.legacy.dll
+C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\Messager.EskizUz.dll
+C:\Users\mirab\Desktop\Hotel_Menagement_System\Hotel_Menagement_System\Web\bin\Debug\net8.0\Newtonsoft.Json.dll

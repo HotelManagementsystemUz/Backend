@@ -244,4 +244,37 @@ public class GuestController : ControllerBase
             return StatusCode(500, $"Internal server error: {ex.Message}"); 
         }
     }
+
+
+    [HttpPost("send-sms-guest")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> SendingSMS(int guestId,[FromBody] string text)
+    {
+        try
+        {
+            await _guestService.SendSMS(guestId, text);
+            return Ok("SMS send successfully");
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
 }

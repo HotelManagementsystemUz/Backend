@@ -1,6 +1,6 @@
 ﻿
 
-using Microsoft.EntityFrameworkCore;
+using Messager.EskizUz;
 
 namespace Application.Services;
 
@@ -121,6 +121,28 @@ public class GuestService : IGuestService
 
         return _mapper.Map<GuestDto>(guest);
     }
+
+    public async Task SendSMS(int guestId, string text)
+    {
+        var messager = new MessagerAgent("sizning-email@example.com", "sizning-maxfiy-kalitingiz");
+
+        var guest = await _unitOfWork.GuestInterface.GetByIdAsync(guestId);
+        if (guest is null)
+        {
+            throw new NotFoundException("Guest is not found ");
+        }
+        string guestNumber = guest.PhoneNumber;
+        if (guestNumber == null)
+        {
+            throw new CustomException("GuestNumber is not found ");
+        }
+        var result =  await messager.SendSMSAsync(guestNumber, text);
+        if (!result)
+        {
+            throw new CustomException("SMS yuborishda hatolik yuz berdi!");
+        }
+    }
+
 
     public async Task<string> Summa(int guestId)
     {

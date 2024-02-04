@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="8.0.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Messager.EskizUz" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
