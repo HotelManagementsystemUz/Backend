@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Hotel_Men
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Hotel_Menagement_System\Web\Web.csproj", "{4CEB5D7E-3E04-4C8E-834A-659532049B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel_Menagement_System.Test", "Hotel_Menagement_System.Test\Hotel_Menagement_System.Test.csproj", "{E5D88E02-E900-434D-9196-958BCF9BB722}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel_Menagement_System.Test", "Hotel_Menagement_System.Test\Hotel_Menagement_System.Test.csproj", "{E5D88E02-E900-434D-9196-958BCF9BB722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

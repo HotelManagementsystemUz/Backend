@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "glp9sAdiTJykc36eVWevfLyEx/OfKrVeEJ1GV/TEIH54jk2DKlwxZYTEH4BCcvOjIdYKuIgGeCNXOVQV038jzg==",
+  "dgSpecHash": "3HkHDROCn8Nw+MkZTiX6751RG9gEu8dnrc8d0gHW/GKkYODBGzbaVetuyMZWWVKmFRwHOQgetGOYh6YieBKtUQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mirab\\Desktop\\Hotel_Menagement_System\\Hotel_Menagement_System.Test\\Hotel_Menagement_System.Test.csproj",
   "expectedPackageFiles": [
@@ -55,6 +55,7 @@
     "C:\\Users\\mirab\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.6.0\\microsoft.testplatform.objectmodel.17.6.0.nupkg.sha512",
     "C:\\Users\\mirab\\.nuget\\packages\\microsoft.testplatform.testhost\\17.6.0\\microsoft.testplatform.testhost.17.6.0.nupkg.sha512",
     "C:\\Users\\mirab\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\mirab\\.nuget\\packages\\mstest.testframework\\3.2.0\\mstest.testframework.3.2.0.nupkg.sha512",
     "C:\\Users\\mirab\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\mirab\\.nuget\\packages\\npgsql\\8.0.0\\npgsql.8.0.0.nupkg.sha512",
     "C:\\Users\\mirab\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.0\\npgsql.entityframeworkcore.postgresql.8.0.0.nupkg.sha512",

@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entities.HotelEntiries;
 using NUnit.Framework.Legacy;
 
-namespace Hotel_Management_System.Test.InfrastructureTests.Repositories; 
-
+namespace Hotel_Management_System.Test.InfrastructureTests.Repositories;
 public class RoomStatusRepositoryTest
 {
     private DbContextOptions<ApplicationDbContext> options =
