@@ -1,14 +1,13 @@
 ﻿using Application.Common.Constants;
 using Application.Common.Exceptions;
 using Application.DTOs.HotelDtos.RoomStatus;
-using Domain.Entities.HotelEntiries;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "ADMIN, SuperAdmin")]
+[Authorize(Roles = IdentityRoles.ADMIN)]
 
 public class RoomStatusController(IRoomStatusService roomStatusService) : ControllerBase
 {

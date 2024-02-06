@@ -8,7 +8,9 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "ADMIN, SuperAdmin")]
+//[Authorize(Roles = "ADMIN, SuperAdmin")]
+[Authorize(Roles = IdentityRoles.ADMIN)]
+
 
 public class OrganizationController(IOrganizationService organizationService) : ControllerBase
 {

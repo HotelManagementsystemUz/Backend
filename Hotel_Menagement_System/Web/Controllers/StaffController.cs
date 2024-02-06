@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Constants;
+using Application.Common.Exceptions;
 using Application.DTOs.HotelDtos.Staff;
 using Microsoft.AspNetCore.Authorization;
 
@@ -6,7 +7,9 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "ADMIN, SuperAdmin")]
+//[Authorize(Roles = "ADMIN, SuperAdmin")]
+[Authorize(Roles = IdentityRoles.ADMIN)]
+
 public class StaffController(IStaffService staffService) : ControllerBase
 {
     public IStaffService _staffService { get; } = staffService;
