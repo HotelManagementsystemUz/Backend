@@ -18,6 +18,7 @@ namespace Infrastructure.Data
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Organization> Organizations { get; set; }
 
+        public DbSet<RoomStatus> RoomStatuses { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

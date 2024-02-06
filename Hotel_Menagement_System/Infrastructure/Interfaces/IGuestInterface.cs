@@ -2,9 +2,8 @@
 
 using Domain.Entities.HotelEntiries;
 
-namespace Infrastructure.Interfaces
+namespace Infrastructure.Interfaces;
+
+public interface IGuestInterface:IRepository<Guest> 
 {
-    public interface IGuestInterface:IRepository<Guest> 
-    {
-    }
 }

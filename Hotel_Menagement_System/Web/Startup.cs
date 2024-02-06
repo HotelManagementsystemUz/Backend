@@ -17,206 +17,206 @@ using System.Text;
 
 #endregion
 
-namespace Web
+namespace Web;
+
+public static class Startup
 {
-    public static class Startup
+    private const string CORS_POLICY = "CorsPolicy";
+
+    public static void AddDependencyInjection(this WebApplicationBuilder builder)
     {
-        private const string CORS_POLICY = "CorsPolicy";
-
-        public static void AddDependencyInjection(this WebApplicationBuilder builder)
+        #region Default services
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(options =>
         {
-            #region Default services
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme.",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer"
-                });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                Array.Empty<string>()
-            }
-        });
+                Description = "JWT Authorization header using the Bearer scheme.",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer"
             });
-            #endregion
-
-            #region DbContext
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
-
-
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-            #endregion
-
-            #region Identity
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
             {
-                // Password requirements settings
-                options.Password.RequiredLength = 6;
-                options.Password.RequireDigit = true;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
-              .AddDefaultTokenProviders();
-
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
+                Reference = new OpenApiReference
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-                    };
-                });
-            #endregion
-
-            #region CORS
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy(CORS_POLICY,
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                                .AllowAnyMethod()
-                                .AllowAnyHeader();
-                    });
-            });
-            #endregion
-
-            #region Mapper
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutoMepperProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            builder.Services.AddSingleton(mapper);
-            #endregion
-
-            #region Application services
-
-            builder.Services.AddScoped<IIdentityService, IdentityService>();
-
-            builder.Services.AddTransient<IGuestInterface, GuestRepository>();
-
-            builder.Services.AddTransient<IOrderInterface, OrderRepository>();
-            builder.Services.AddTransient<IOrderStatusInterface, OrderStatusRepository>();
-
-            builder.Services.AddTransient<IPositionInterface, PositionRepository>();
-            builder.Services.AddTransient<IRoomInterface, RoomRepository>();
-
-            builder.Services.AddTransient<IRoomStatusInterface, RoomStatusRepository>();
-            builder.Services.AddTransient<IRoomTypeInterface, RoomTypeRepository>();
-
-            builder.Services.AddTransient<IStaffInterface, StaffRepository>();
-            builder.Services.AddTransient<IOrganizitionInterface, OrganizitionRepository>();
-
-            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-
-            builder.Services.AddTransient<IGuestService, GuestService>();   
-            builder.Services.AddTransient<IOrderService, OrderService>();
-            builder.Services.AddTransient<IRoomStatusService, RoomStatusService>();
-            builder.Services.AddTransient<IPositionService, PositionService>();
-            builder.Services.AddTransient<IRoomTypeService, RoomTypeService>();
-            builder.Services.AddTransient<IRoomService, RoomService>();
-            builder.Services.AddTransient<IStaffService , StaffService>();
-            builder.Services.AddTransient<IOrderStatusService , OrderStatusService>();
-            builder.Services.AddTransient<IAdminService,  AdminService>();
-            builder.Services.AddTransient<IOrganizationService, OrganizationService>();
-
-            #endregion
-        }
-
-        public static void AddMiddleware(this WebApplication app)
-        {
-        
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            
-
-            app.UseCors(CORS_POLICY);
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllers();
-            SeedDatabase(app);
-        }
-
-        private static void SeedDatabase(this IApplicationBuilder builder)
-        {
-            using var scope = builder.ApplicationServices.CreateScope();
-            var services = scope.ServiceProvider;
-            var context = services.GetRequiredService<ApplicationDbContext>();
-            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-            context.Database.Migrate();
-
-            SeedDataAsync(context, userManager, roleManager).Wait();
-        }
-
-        private static async Task SeedDataAsync(ApplicationDbContext context,
-                                                UserManager<ApplicationUser> userManager,
-                                                RoleManager<IdentityRole> roleManager)
-        {
-            var roles = new List<IdentityRole>
-            {
-                new IdentityRole { Name = IdentityRoles.SUPER_ADMIN },
-                new IdentityRole { Name = IdentityRoles.ADMIN },
-                new IdentityRole { Name = IdentityRoles.USER }
-            };
-
-            var roleExists = roleManager.Roles.Any();
-            if (!roleExists)
-            {
-                foreach (var role in roles)
-                {
-                    await roleManager.CreateAsync(role);
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
-            }
+            },
+            Array.Empty<string>()
+        }
+    });
+        });
+        #endregion
 
-            var superAdmin = new ApplicationUser
-            {
-                FirstName = "Super",
-                LastName = "Admin",
-                Email = "superadmin@localhost",
-                UserName = "superadmin@localhost"
-            };
+        #region DbContext
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
 
-            var result = await userManager.CreateAsync(superAdmin, "Admin.123$");
-            if (result.Succeeded)
+
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+        #endregion
+
+        #region Identity
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+        {
+            // Password requirements settings
+            options.Password.RequiredLength = 6;
+            options.Password.RequireDigit = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+        }).AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
+
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+            .AddJwtBearer(options =>
             {
-                await userManager.AddToRoleAsync(superAdmin, IdentityRoles.SUPER_ADMIN);
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                };
+            });
+        #endregion
+
+        #region CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(CORS_POLICY,
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                });
+        });
+        #endregion
+
+        #region Mapper
+        var mapperConfig = new MapperConfiguration(mc =>
+        {
+            mc.AddProfile(new AutoMepperProfile());
+        });
+
+        IMapper mapper = mapperConfig.CreateMapper();
+        builder.Services.AddSingleton(mapper);
+        #endregion
+
+        #region Application services
+
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+        builder.Services.AddTransient<IGuestInterface, GuestRepository>();
+
+        builder.Services.AddTransient<IOrderInterface, OrderRepository>();
+        builder.Services.AddTransient<IOrderStatusInterface, OrderStatusRepository>();
+
+        builder.Services.AddTransient<IPositionInterface, PositionRepository>();
+        builder.Services.AddTransient<IRoomInterface, RoomRepository>();
+
+        builder.Services.AddTransient<IRoomStatusInterface, RoomStatusRepository>();
+        builder.Services.AddTransient<IRoomTypeInterface, RoomTypeRepository>();
+
+        builder.Services.AddTransient<IStaffInterface, StaffRepository>();
+        builder.Services.AddTransient<IOrganizitionInterface, OrganizitionRepository>();
+
+        builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
+        builder.Services.AddTransient<IGuestService, GuestService>();   
+        builder.Services.AddTransient<IOrderService, OrderService>();
+        builder.Services.AddTransient<IRoomStatusService, RoomStatusService>();
+        builder.Services.AddTransient<IPositionService, PositionService>();
+        builder.Services.AddTransient<IRoomTypeService, RoomTypeService>();
+        builder.Services.AddTransient<IRoomService, RoomService>();
+        builder.Services.AddTransient<IStaffService , StaffService>();
+        builder.Services.AddTransient<IOrderStatusService , OrderStatusService>();
+        builder.Services.AddTransient<IAdminService,  AdminService>();
+        builder.Services.AddTransient<IOrganizationService, OrganizationService>();
+
+        #endregion
+    }
+
+    public static void AddMiddleware(this WebApplication app)
+    {
+    
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
+
+        app.UseCors(CORS_POLICY);
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
+        SeedDatabase(app);
+    }
+
+    private static void SeedDatabase(this IApplicationBuilder builder)
+    {
+        using var scope = builder.ApplicationServices.CreateScope();
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        context.Database.Migrate();
+
+        SeedDataAsync(context, userManager, roleManager).Wait();
+    }
+
+    private static async Task SeedDataAsync(ApplicationDbContext context,
+                                            UserManager<ApplicationUser> userManager,
+                                            RoleManager<IdentityRole> roleManager)
+    {
+        var roles = new List<IdentityRole>
+        {
+            new IdentityRole { Name = IdentityRoles.SUPER_ADMIN },
+            new IdentityRole { Name = IdentityRoles.ADMIN },
+            new IdentityRole { Name = IdentityRoles.USER }
+        };
+
+        var roleExists = roleManager.Roles.Any();
+        if (!roleExists)
+        {
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role);
             }
+        }
+
+        var superAdmin = new ApplicationUser
+        {
+            FirstName = "Super",
+            LastName = "Admin",
+            Email = "superadmin@localhost",
+            UserName = "superadmin@localhost"
+        };
+
+        var result = await userManager.CreateAsync(superAdmin, "Admin.123$");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(superAdmin, IdentityRoles.SUPER_ADMIN);
         }
     }
 }
+

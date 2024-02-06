@@ -267,7 +267,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomStatus");
+                    b.ToTable("RoomStatuses");
                 });
 
             modelBuilder.Entity("Domain.Entities.HotelEntiries.RoomType", b =>
