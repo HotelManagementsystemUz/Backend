@@ -1,6 +1,8 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Constants;
+using Application.Common.Exceptions;
 using Application.DTOs.ApplicationUserDtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Web.Controllers;
 
@@ -39,6 +41,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Roles = IdentityRoles.SUPER_ADMIN)]
     public async Task<IActionResult> Register(RegisterUser registerUser)
     {
         try
@@ -57,7 +60,6 @@ public class AdminController(IAdminService adminService) : ControllerBase
     }
 
     [HttpPatch("change-admin-password")]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -85,7 +87,6 @@ public class AdminController(IAdminService adminService) : ControllerBase
     }
 
     [HttpDelete("delete-admin-account")]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -96,6 +97,34 @@ public class AdminController(IAdminService adminService) : ControllerBase
         try
         {
             await _adminService.DeleteAccountAsync(deleteAccountUser);
+            return Ok();
+        }
+        catch (CustomException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+
+    [HttpDelete("logout-admin-account")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> LogoutAccount(LogoutUser logoutUser)
+    {
+        try
+        {
+            await _adminService.LogoutAsync(logoutUser);
             return Ok();
         }
         catch (CustomException ex)
