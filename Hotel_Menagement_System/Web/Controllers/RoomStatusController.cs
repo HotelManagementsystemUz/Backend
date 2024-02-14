@@ -7,7 +7,7 @@ namespace Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = IdentityRoles.ADMIN)]
+//[Authorize(Roles = IdentityRoles.ADMIN)]
 
 public class RoomStatusController(IRoomStatusService roomStatusService) : ControllerBase
 {

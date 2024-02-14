@@ -13,4 +13,8 @@ public interface IRoomService
     Task DeleteRoomAsync(int roomId);
     Task UpdateRoomAsync(UpdateRoomDto room);
     Task<List<RoomDto>> FilterRooms(string searchText);
+    Task<List<GetRoomDto>> GetAllWithTypeAndStatus();
+    Task<GetRoomDto> GetByIdWithTypeAndStatus(int id);
+
+
 }

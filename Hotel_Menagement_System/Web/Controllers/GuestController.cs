@@ -8,7 +8,7 @@ namespace Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 //[Authorize(Roles = "Admin, SuperAdmin")]
-[Authorize(Roles = IdentityRoles.ADMIN)]
+//[Authorize(Roles = IdentityRoles.ADMIN)]
 
 public class GuestController : ControllerBase
 {

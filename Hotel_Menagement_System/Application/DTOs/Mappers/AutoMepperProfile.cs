@@ -47,6 +47,7 @@ public class AutoMepperProfile:Profile
         CreateMap<RoomType, RoomTypeDto>().ReverseMap();
         CreateMap<AddRoomTypeDto, RoomType>();
         CreateMap<UpdateRoomTypeDto, RoomType>();
+        CreateMap<GetRoomDto, RoomType>().ReverseMap();
 
         CreateMap<Staff, StaffDto>().ReverseMap();
         CreateMap<AddStaffDto, Staff>();

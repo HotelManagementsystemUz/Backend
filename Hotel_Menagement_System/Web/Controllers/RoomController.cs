@@ -8,7 +8,7 @@ namespace Web.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 //[Authorize(Roles = "ADMIN, SuperAdmin")]
-[Authorize(Roles = IdentityRoles.ADMIN)]
+//[Authorize(Roles = IdentityRoles.ADMIN)]
 
 
 public class RoomController(IRoomService roomService) : ControllerBase
@@ -50,6 +50,44 @@ public class RoomController(IRoomService roomService) : ControllerBase
         try
         {
             var rooms = await _roomService.GetAllRoomAsync();
+            return Ok(rooms);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    [HttpGet("get-all-with-type-and-starus")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllWithTypeAndStarus()
+    {
+        try
+        {
+            var rooms = await _roomService.GetAllWithTypeAndStatus();
+            return Ok(rooms);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    [HttpGet("get-by-id-with-type-and-starus{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetByIdWithTypeAndStatus(int id)
+    {
+        try
+        {
+            var rooms = await _roomService.GetByIdWithTypeAndStatus(id);
             return Ok(rooms);
         }
         catch (Exception)
