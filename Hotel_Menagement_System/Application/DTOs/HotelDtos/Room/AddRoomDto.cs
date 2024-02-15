@@ -13,6 +13,10 @@ public class AddRoomDto
     public decimal Price { get; set; }
     public string Description { get; set; } = string.Empty;
 
+
+    [Required(ErrorMessage = "Xonaning shaxs sonini kiriting.")]
+    public int PersonCount { get; set; }
+
     [Required(ErrorMessage = "Xonaning turi identifikatorini kiriting.")]
     public int RoomTypeId { get; set; }
 

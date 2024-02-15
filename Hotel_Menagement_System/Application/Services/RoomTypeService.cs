@@ -28,10 +28,7 @@ public class RoomTypeService(IUnitOfWork unitOfWork , IMapper mapper):IRoomTypeS
             throw new CustomException("RoomType is invalid");
         }
 
-        if (roomType.PersonCount <= 0)
-        {
-            throw new CustomException("The number of persons in the room cannot be less than 0");
-        }
+       
 
         var roomTypes = await _unitOfWork.RoomTypeInterface.GetAllAsync();
 
@@ -102,10 +99,7 @@ public class RoomTypeService(IUnitOfWork unitOfWork , IMapper mapper):IRoomTypeS
             throw new CustomException("RoomType is invalid");
         }
 
-        if (roomType.PersonCount <= 0)
-        {
-            throw new CustomException("The number of persons in the room cannot be less than 0");
-        }
+     
 
         var roomTypes = await _unitOfWork.RoomTypeInterface.GetAllAsync();
 

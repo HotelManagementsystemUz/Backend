@@ -101,11 +101,12 @@ public class RoomService(IUnitOfWork unitOfWork, IMapper mapper) : IRoomService
             Number = room.Number,
             Price = room.Price,
             Description = room.Description,
+            PersonCount = room.PersonCount,
             RoomType = new RoomTypeDto
             {
                 Id = room.RoomType.Id,
                 Name = room.RoomType.Name,
-                PersonCount = room.RoomType.PersonCount
+              
                 
             },
             RoomStatus = new RoomStatusDto
@@ -135,11 +136,12 @@ public class RoomService(IUnitOfWork unitOfWork, IMapper mapper) : IRoomService
             Number = room.Number,
             Price = room.Price,
             Description = room.Description,
+            PersonCount = room.PersonCount,
             RoomType = new RoomTypeDto
             {
                 Id = room.RoomType.Id,
                 Name = room.RoomType.Name,
-                PersonCount = room.RoomType.PersonCount
+        
             },
             RoomStatus = new RoomStatusDto
             {

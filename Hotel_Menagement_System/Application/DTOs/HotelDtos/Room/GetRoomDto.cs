@@ -13,6 +13,10 @@ public class GetRoomDto : BaseDto
 
     public string Description { get; set; } = string.Empty;
 
+
+    [Required(ErrorMessage = "Xonaning shaxs sonini kiriting.")]
+    public int PersonCount { get; set; }
+
     [Required(ErrorMessage = "Enter the room type.")]
     public RoomTypeDto RoomType { get; set; } // Assuming RoomTypeDto exists
 

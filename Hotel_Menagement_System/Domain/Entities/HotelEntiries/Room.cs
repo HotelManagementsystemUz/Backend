@@ -16,6 +16,10 @@ public class Room:BaseEntity
 
     public string Description { get; set; } = string.Empty;
 
+
+    [Required(ErrorMessage = "Xonaning shaxs sonini kiriting.")]
+    public int PersonCount { get; set; }
+
     [Required]
     public int RoomTypeId { get; set; }
 

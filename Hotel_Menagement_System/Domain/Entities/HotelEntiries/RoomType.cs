@@ -9,6 +9,4 @@ public class RoomType:BaseEntity
     [Required]
     public string Name { get; set; } = string.Empty;
 
-    [Required]
-    public int PersonCount { get; set; }
 }

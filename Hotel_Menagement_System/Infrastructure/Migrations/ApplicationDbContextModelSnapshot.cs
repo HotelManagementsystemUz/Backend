@@ -235,6 +235,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PersonCount")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -281,9 +284,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("PersonCount")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
